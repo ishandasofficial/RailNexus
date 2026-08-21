@@ -115,6 +115,12 @@ export class DocumentVaultModule {
     const docs = train.documents;
     const dotColor = train.induction === 'revenue' ? 'var(--status-service)' : train.induction === 'standby' ? 'var(--status-standby)' : 'var(--status-critical)';
 
+    const fitText = docs.fitness.status === 'missing' ? 'UNAVAILABLE' : docs.fitness.certNo;
+    const maxText = docs.maximo.status === 'missing' ? 'UNAVAILABLE' : docs.maximo.jobId;
+    const cleanText = docs.cleaning.status === 'missing' ? 'UNAVAILABLE' : docs.cleaning.status.toUpperCase();
+    const brandText = docs.branding.status === 'missing' ? 'UNAVAILABLE' : docs.branding.sponsor;
+    const overallText = train.overallDocTag === 'missing' ? 'UNAVAILABLE' : train.overallDocTag.toUpperCase();
+
     return `
       <tr>
         <td class="train-id-cell">
@@ -125,41 +131,47 @@ export class DocumentVaultModule {
         <td>
           <span class="doc-status-badge ${docs.fitness.status}">
             <i data-lucide="${docs.fitness.status === 'valid' ? 'check' : docs.fitness.status === 'expired' ? 'x-circle' : 'alert-circle'}"></i>
-            ${docs.fitness.certNo}
+            ${fitText}
           </span>
         </td>
 
         <td>
           <span class="doc-status-badge ${docs.maximo.status}">
-            <i data-lucide="${docs.maximo.status === 'valid' ? 'wrench' : 'clock'}"></i>
-            ${docs.maximo.jobId}
+            <i data-lucide="${docs.maximo.status === 'valid' ? 'wrench' : docs.maximo.status === 'warning' ? 'clock' : 'alert-circle'}"></i>
+            ${maxText}
           </span>
         </td>
 
         <td>
           <span class="doc-status-badge ${docs.cleaning.status}">
             <i data-lucide="${docs.cleaning.status === 'valid' ? 'sparkles' : 'alert-triangle'}"></i>
-            ${docs.cleaning.status.toUpperCase()}
+            ${cleanText}
           </span>
         </td>
 
         <td>
           <span class="doc-status-badge ${docs.branding.status}">
-            <i data-lucide="award"></i>
-            ${docs.branding.sponsor}
+            <i data-lucide="${docs.branding.status === 'missing' ? 'alert-circle' : 'award'}"></i>
+            ${brandText}
           </span>
         </td>
 
         <td>
           <span class="doc-status-badge ${train.overallDocTag}" style="font-weight:700;">
-            ${train.overallDocTag.toUpperCase()}
+            ${overallText}
           </span>
         </td>
 
         <td>
-          <button class="action-btn-sm edit-doc-btn" data-train="${train.id}">
-            <i data-lucide="edit-3" style="width:12px; height:12px; vertical-align:middle;"></i> Manage
-          </button>
+          ${train.overallDocTag === 'missing' ? `
+            <button class="action-btn-sm edit-doc-btn" data-train="${train.id}" style="background:var(--status-critical-bg); color:var(--status-critical); border-color:var(--status-critical-border); font-weight:700;">
+              <i data-lucide="alert-circle" style="width:12px; height:12px; vertical-align:middle;"></i> Unavailable
+            </button>
+          ` : `
+            <button class="action-btn-sm edit-doc-btn" data-train="${train.id}">
+              <i data-lucide="edit-3" style="width:12px; height:12px; vertical-align:middle;"></i> Manage
+            </button>
+          `}
         </td>
       </tr>
     `;
@@ -229,7 +241,7 @@ export class DocumentVaultModule {
           <select id="edit-fitness-status" class="form-select">
             <option value="valid" ${train.documents.fitness.status === 'valid' ? 'selected' : ''}>Valid</option>
             <option value="expired" ${train.documents.fitness.status === 'expired' ? 'selected' : ''}>Expired</option>
-            <option value="missing" ${train.documents.fitness.status === 'missing' ? 'selected' : ''}>Missing</option>
+            <option value="missing" ${train.documents.fitness.status === 'missing' ? 'selected' : ''}>Missing (Unavailable)</option>
           </select>
         </div>
 
@@ -238,7 +250,7 @@ export class DocumentVaultModule {
           <select id="edit-maximo-status" class="form-select">
             <option value="valid" ${train.documents.maximo.status === 'valid' ? 'selected' : ''}>Valid (Complete)</option>
             <option value="warning" ${train.documents.maximo.status === 'warning' ? 'selected' : ''}>Warning (Due)</option>
-            <option value="missing" ${train.documents.maximo.status === 'missing' ? 'selected' : ''}>Missing</option>
+            <option value="missing" ${train.documents.maximo.status === 'missing' ? 'selected' : ''}>Missing (Unavailable)</option>
           </select>
         </div>
 
@@ -247,7 +259,7 @@ export class DocumentVaultModule {
           <select id="edit-cleaning-status" class="form-select">
             <option value="valid" ${train.documents.cleaning.status === 'valid' ? 'selected' : ''}>Valid</option>
             <option value="expired" ${train.documents.cleaning.status === 'expired' ? 'selected' : ''}>Expired</option>
-            <option value="missing" ${train.documents.cleaning.status === 'missing' ? 'selected' : ''}>Missing</option>
+            <option value="missing" ${train.documents.cleaning.status === 'missing' ? 'selected' : ''}>Missing (Unavailable)</option>
           </select>
         </div>
 
@@ -256,7 +268,7 @@ export class DocumentVaultModule {
           <select id="edit-branding-status" class="form-select">
             <option value="valid" ${train.documents.branding.status === 'valid' ? 'selected' : ''}>Valid</option>
             <option value="expired" ${train.documents.branding.status === 'expired' ? 'selected' : ''}>Expired</option>
-            <option value="missing" ${train.documents.branding.status === 'missing' ? 'selected' : ''}>Missing</option>
+            <option value="missing" ${train.documents.branding.status === 'missing' ? 'selected' : ''}>Missing (Unavailable)</option>
           </select>
         </div>
       </div>

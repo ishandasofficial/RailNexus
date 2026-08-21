@@ -61,7 +61,13 @@ class RailNexusApp {
             <i data-lucide="zap"></i> WHAT-IF SIMULATOR
           </button>
 
-          <div id="live-clock" class="time-display">--:--:--</div>
+          <div class="date-time-display" style="display:flex; align-items:center; gap:0.5rem; background:var(--bg-secondary); padding:5px 12px; border-radius:var(--radius-md); border:1px solid var(--border-color); font-weight:600; font-size:0.8rem; color:var(--text-main);">
+            <i data-lucide="calendar" style="width:13px; height:13px; color:var(--accent-terracotta);"></i>
+            <span id="live-date">-- --- ----</span>
+            <span style="color:var(--border-color);">|</span>
+            <i data-lucide="clock" style="width:13px; height:13px; color:var(--status-service);"></i>
+            <span id="live-clock" style="font-family:monospace; font-size:0.85rem;">--:--:--</span>
+          </div>
         </div>
       </header>
 
@@ -256,9 +262,14 @@ class RailNexusApp {
 
   startClock() {
     const updateTime = () => {
-      const el = document.querySelector('#live-clock');
-      if (el) {
-        el.innerText = new Date().toLocaleTimeString();
+      const clockEl = document.querySelector('#live-clock');
+      const dateEl = document.querySelector('#live-date');
+      const now = new Date();
+      if (clockEl) {
+        clockEl.innerText = now.toLocaleTimeString();
+      }
+      if (dateEl) {
+        dateEl.innerText = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
       }
     };
     updateTime();
