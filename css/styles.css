@@ -339,6 +339,117 @@ body {
   margin-top: 2px;
 }
 
+.inspection-cart-card {
+  border-top: 3px solid var(--accent-terracotta);
+}
+
+.inspection-signal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid;
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.inspection-cart-grid {
+  display: grid;
+  grid-template-columns: minmax(170px, 1.2fr) 1fr 1fr;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.inspection-readout {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.55rem 0.75rem;
+}
+
+.inspection-readout .form-label {
+  margin-bottom: 0.1rem;
+}
+
+.inspection-track {
+  position: relative;
+  height: 8px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  margin: 1.25rem 0 0.55rem;
+  border: 1px solid var(--border-color);
+}
+
+.inspection-track-progress {
+  height: 100%;
+  background: var(--status-service);
+  border-radius: inherit;
+  transition: width 0.25s ease;
+}
+
+.inspection-marker {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--border-dark);
+  background: var(--bg-surface);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.inspection-marker.checked {
+  border-color: var(--status-service);
+  background: var(--status-service);
+}
+
+.inspection-meta,
+.inspection-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.inspection-actions {
+  justify-content: flex-start;
+  margin-top: 1rem;
+}
+
+.inspection-actions .btn-primary,
+.inspection-actions .action-btn-sm {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.track-routing-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.track-routing-actions .form-label {
+  margin: 0 0.2rem 0 0;
+}
+
+@media (max-width: 700px) {
+  .inspection-cart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .inspection-meta,
+  .inspection-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
 /* Summary Grid - KPI Card Variation */
 .summary-grid {
   display: grid;
@@ -861,6 +972,20 @@ body {
   margin: 1.25rem 3.5rem 0.5rem 3.5rem;
 }
 
+.four-line-map {
+  height: 490px;
+}
+
+.line-status-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 900px) {
+  .line-status-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .line-title-tag {
   position: absolute;
   font-size: 0.72rem;
@@ -886,6 +1011,22 @@ body {
   background: rgba(53, 36, 58, 0.08);
   color: var(--dark-primary);
   border: 1px solid rgba(53, 36, 58, 0.2);
+}
+
+.tag-line3 {
+  top: 240px;
+  left: 0%;
+  background: var(--accent-teal-tint);
+  color: var(--accent-teal);
+  border: 1px solid var(--status-service-border);
+}
+
+.tag-line4 {
+  top: 360px;
+  left: 0%;
+  background: var(--accent-mustard-tint);
+  color: var(--dark-primary);
+  border: 1px solid var(--status-standby-border);
 }
 
 /* Line 1 (North Line) Track */
@@ -933,6 +1074,31 @@ body {
   border-radius: 3px;
   width: 100%;
 }
+
+.line3-track,
+.line4-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--border-color);
+  transform: translateY(-50%);
+  border-radius: 3px;
+  z-index: 1;
+}
+
+.line3-track { top: 292px; }
+.line4-track { top: 412px; }
+
+.line3-progress,
+.line4-progress {
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+}
+
+.line3-progress { background: var(--accent-teal); }
+.line4-progress { background: var(--accent-mustard); }
 
 /* Connected / Disconnected Interchange Switch Link */
 .interchange-junction-switch {
@@ -994,6 +1160,8 @@ body {
 
 .train-map-pin.pin-on-line1 { top: 22px; }
 .train-map-pin.pin-on-line2 { top: 142px; }
+.train-map-pin.pin-on-line3 { top: 262px; }
+.train-map-pin.pin-on-line4 { top: 382px; }
 
 .pin-badge-pill {
   background: var(--accent-terracotta);
@@ -1010,7 +1178,7 @@ body {
 }
 
 .pin-badge-pill.conflict {
-  background: var(--status-critical);
+  background: var(--status-critical) !important;
   animation: subtle-pulse 1s infinite;
 }
 
